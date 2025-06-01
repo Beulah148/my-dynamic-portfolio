@@ -33,6 +33,34 @@ themeToggleBtn.addEventListener('click', () => {
         localStorage.setItem('theme', 'light');
     }
 });
+// Task 4: Load and Display Portfolio Projects from JSON
+const projectsContainer = document.getElementById('projects-container');
+
+async function loadProjects() {
+    try {
+        const response = await fetch('data/portfolio_items.json');
+        if (!response.ok) {
+            throw new Error(HTTP error! status: ${response.status});
+        }
+        const projects = await response.json();
+
+        projects.forEach(project => {
+            const projectCard = document.createElement('div');
+            projectCard.classList.add('project-card');
+            projectCard.innerHTML = `
+                <h3>${project.name}</h3>
+                <p>${project.description}</p>
+                <a href="${project.link}" target="_blank">View Project</a>
+            `;
+            projectsContainer.appendChild(projectCard);
+        });
+    } catch (error) {
+        console.error('Error loading projects:', error);
+        projectsContainer.innerHTML = '<p>Failed to load projects. Please try again later.</p>';
+    }
+}
+
+loadProjects(); // Call the function
 
 // Task 4: Load dark mode on page load
 window.addEventListener('load', () => {
